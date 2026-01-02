@@ -1,0 +1,102 @@
+---
+title: Context
+description: Avoid props drilling by providing data through the component tree.
+---
+
+## Introduction
+
+Usually, you will pass information from a parent component to a child component via props. But passing props can become verbose and inconvenient if you have to pass them through many components in the middle, or if many components in your app need the same information.
+**This is called props drilling**.
+
+As a solution you can use **Context** that will share data that can be considered as "global" to a tree of components.
+
+Some use cases for using **Contexts**:
+
+- Forwarding application theme
+- Accessing current authenticated user
+- Reading current HTTP request
+
+## Usage
+
+You can create a context by using the `createContext` function then provide context value by wrapping components inside `MyContext.Provider` component.
+
+Components rendered inside a Provider can access the context using `MyContext.get`/`MyContext.getOrFail`.
+
+```tsx
+import { createContext, ComponentProps } from '@osmosjs/osmos'
+
+const AuthContext = createContext<{ user: User }>()
+
+function UserProfile() {
+  const { user } = AuthContext.getOrFail()
+
+  return (
+    <div>
+      <img src={user.avatar} />
+      {user.firstName} {user.lastName}
+    </div>
+  )
+}
+
+function Toolbar() {
+  return (
+    <div>
+      <UserProvider />
+    </div>
+  )
+}
+
+function App({ user }: { user: User }) {
+  return (
+    <AuthContext.Provider value={{ user }}>
+      <Toolbar />
+    </AuthContext.Provider>
+  )
+}
+```
+
+## API
+
+### `createContext`
+
+```tsx
+import { createContext } from '@osmosjs/osmos'
+
+const MyContext = createContext<Type>(defaultValue)
+```
+
+Creates a Context object by using NodeJS [AsyncLocalStorage](https://nodejs.org/api/async_context.html) containg methods for accessing and providing context data.
+
+The `defaultValue` argument is **only** used when a component does not have a matching Provider above it in the tree.
+
+### `Context.Provider`
+
+```tsx
+<MyContext.Provider value={/* some value */}>
+```
+
+Every Context object comes with a Provider component that allows components in the tree to retrieve the context.
+
+### `Context.get`
+
+```tsx
+MyContext.get()
+```
+
+Retrieve the current context value. When no context is provided it returns the `defaultValue` or `undefined`.
+
+### `Context.getOrFail`
+
+```tsx
+MyContext.getOrFail()
+```
+
+Retrieve the current context value. When no context is provided it returns the `defaultValue` when defined or throws an error.
+
+### `Context.storage`
+
+```tsx
+MyContext.storage
+```
+
+Contains the [AsyncLocalStorage](https://nodejs.org/api/async_context.html) used for storing and providing the context.

@@ -1,0 +1,39 @@
+---
+title: Tags
+description: Safely render raw HTML, CSS and JS.
+---
+
+## Introduction
+
+Text rendered is always escaped to avoid [Cross-Site scripting (XSS)](https://developer.mozilla.org/en-US/docs/Glossary/Cross-site_scripting).
+To render raw HTML, CSS or JS, OsmosJS provide templating functions called tags to render raw HTML.
+
+## Usage
+
+The available tags are `html`, `js` and `css`. They are all the same function but are named differently to allow syntax highlighting in IDEs.
+
+```tsx tab="Typescript"
+const App = () => {
+  return <div>{html`<h1>Rendered raw HTML</h1>`}</div>
+}
+```
+
+```html tab="HTML"
+<div><h1>Rendered raw HTML</h1></div>
+```
+
+By using string interpolation we can use dynamic values.
+The interpolated arguments **are escaped** which mean we are still safe from XSS:
+
+```tsx tab="Typescript"
+const App = () => {
+  const user = "<script>alert('XSS')</script>"
+  return <div>{html`<h1>Hello ${user}</h1>`}</div>
+}
+```
+
+```html tab="HTML"
+<div>
+  <h1>Hello &lt;script &gt;alert(&#39;XSS &#39;)&lt;/script &gt;</h1>
+</div>
+```

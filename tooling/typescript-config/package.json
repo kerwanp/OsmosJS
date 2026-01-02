@@ -1,0 +1,9 @@
+{
+  "name": "@osmosjs/typescript-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "@adonisjs/tsconfig": "^1.4.1"
+  }
+}

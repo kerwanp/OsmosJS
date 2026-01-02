@@ -1,0 +1,38 @@
+---
+title: Vite
+description: Include Javascript and CSS bundled by Vite.
+---
+
+## Introduction
+
+The [@adonisjs/vite](https://docs.adonisjs.com/guides/basics/vite) package allows you to bundle the frontend assets of your application.
+The Osmos Adonis Integration provide a `Vite` component for including entrypoints in your application.
+
+**Before continuing, make sure you have installed and configured [@adonisjs/vite](https://docs.adonisjs.com/guides/basics/vite).**
+
+### Getting Started
+
+The `Vite` component accepts a list of entrypoint paths and will render the `script` and `link` tags.
+The paths you provide should match exactly the path registered inside the `vite.config.js` file.
+
+```ts title="vite.config.ts"
+export default defineConfig({
+  plugins: [
+    adonisjs({
+      entrypoints: ['resources/js/app.ts', 'resources/css/app.css'],
+    }),
+  ],
+})
+```
+
+```tsx
+export const App = () => {
+  return (
+    <html>
+      <head>
+        <Vite entrypoints={['resources/js/app.ts', 'resources/css/app.css']} />
+      </head>
+    </html>
+  )
+}
+```

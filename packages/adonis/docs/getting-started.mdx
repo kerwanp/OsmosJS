@@ -1,0 +1,80 @@
+---
+title: Getting Started
+icon: hgi hgi-stroke hgi-rocket-01
+---
+
+## Installation
+
+Install and configure the package using the following command :
+
+```bash
+node ace add @osmosjs/adonis@alpha
+```
+
+<ConfigurationSteps pkg="@osmosjs/osmos" providers={['osmos']} commands config="osmos" />
+
+## Getting Started
+
+Create your first component. This is usually located inside `app/osmos`.
+
+### Your First Component
+
+```tsx title="app/osmos/pages/home.tsx"
+export function HomePage() {
+  return (
+    <html>
+      <body>
+        <h1>Hello world</h1>
+      </body>
+    </html>
+  )
+}
+```
+
+Then inside a route handler render the component using `osmos.render()`.
+
+```tsx title="route.ts"
+import router from '@adonisjs/core/services/router'
+import { HomePage } from '#osmos/pages/home'
+
+router.get('/', ({ osmos }) => {
+  return osmos.render(HomePage)
+})
+```
+
+### Async Components
+
+As Osmos runs exclusively on the server you can use `async` function and fetch values directly from your components.
+
+```tsx
+const UsersList = async () => {
+  const users = await User.all()
+
+  return (
+    <ul>
+      {users.map((user) => (
+        <li>{user.firstName}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
+### Accessing HttpContext
+
+The Adonis Integration for osmos automatically provides an Adonis Extension using the [Context](/docs/osmos/context) feature.
+
+```tsx
+import { Adonis } from '@osmosjs/adonis'
+
+const UserIP = () => {
+  const adonis = Adonis.getOrFail()
+
+  return <div>Your IP is: {adonis.context.request.ip}</div>
+}
+```
+
+## Going Further
+
+- [Learn more about Osmos components](/docs/osmos/components)
+- [Build and handle Forms directly within components](/docs/adonis/forms)

@@ -1,0 +1,94 @@
+---
+title: Custom Renderer
+description: Extend Osmos capabilities by creating custom renderers
+---
+
+<Callout>This is an advanced topic, we assume that you know how JSX works under the hood.</Callout>
+
+## Introduction
+
+Osmos offers the ability to extend the rendering pipeline to provide custom renderers.
+
+A renderer is simply a function that receive a `OsmosNode` and returns a `boolean` telling if the renderer has handled the given node.
+Custom renderers can be registered using the `OsmosRenderer.register` method.
+
+```ts
+OsmosRenderer.register({
+  name: 'my_renderer',
+  render(node, renderer) {
+    // Custom rendering
+  },
+})
+```
+
+## Example
+
+To showcase the capabilites we will build a custom renderer for handling [AsyncGenerator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGenerator) functions.
+
+```tsx
+function wait(delay: number) {
+  return new Promise((res) => setTimeout(res, delay))
+}
+
+function* CustomComponent() {
+  yield <div>Message 1</div>
+  wait(100)
+  yield <div>Message 2</div>
+  wait(100)
+  yield <div>Message 3</div>
+}
+```
+
+Our renderer must do the following:
+
+- Check if the Node is an AsyncGenerator function
+- Iterate over each yielded values
+- Render each yielded values
+
+```ts
+import { OsmosRenderer } from '@osmosjs/osmos/render'
+import is from '@sindresorhus/is'
+
+OsmosRenderer.register({
+  name: 'async_generator',
+  render(node, renderer) {
+    if (is.asyncGenerator(node)) {
+      for await (const child of node) {
+        return renderer.render(child)
+      }
+    }
+
+    return false
+  },
+})
+```
+
+And that's it, you now support `AsyncGenerator` components!
+
+## API
+
+### `OsmosRenderer.render`
+
+```ts
+OsmosRenderer.render(node)
+```
+
+Renders a `OsmosNode` by going over the renderers. Returns `true` if the node has been rendered or `false` if no renderer supports this node.
+
+### `OsmosRenderer.write`
+
+```ts
+OsmosRenderer.write(text)
+```
+
+Writes of text to the output. It can be called multiple times to send result in multiple chunks that will be streamed
+when using `renderToReadableStream`.
+
+### `OsmosRenderer.error`
+
+```ts
+OsmosRenderer.error(error)
+```
+
+Emits a rendering error. This avoid throwing errors that would break the rendering pipeline.
+Instead the error can be used (e.g logging) without stopping the rendering process.

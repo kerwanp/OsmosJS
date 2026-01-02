@@ -1,0 +1,273 @@
+---
+title: Components
+description: Compose your application using Osmos components.
+---
+
+## Introduction
+
+A **Components** is a lego-brick that can be re-used across your application
+to compose your interface.
+
+With Osmos, a Component is simply a Javascript function returning a value that can be rendered as HTML:
+
+It can be a literal:
+
+```tsx
+function MyComponent() {
+  return 5
+}
+```
+
+Or a JSX element:
+
+```tsx
+function MyComponent() {
+  return <div>Hello world!</div>
+}
+```
+
+Thanks to JSX it is possible to compose our interface by using components as lego-bricks:
+
+```tsx
+function Header() {
+  return (
+    <nav>
+      <a href="/">Homepage</a>
+      <a href="/Blog">Blog</a>
+    </nav>
+  )
+}
+
+function App() {
+  return (
+    <html>
+      <body>
+        <Header />
+        <main>
+          <h1>Welcome!</h1>
+        </main>
+      </body>
+    </html>
+  )
+}
+```
+
+## Props
+
+Components can receive properties (aka. props) that can then be passed using JSX. Properties are always passed as the first function argument.
+
+```tsx
+function NavItem({ label, href }: { label: string, href: string, isActive?: boolean }) {
+  return <a href={href} aria-current={isActive ? 'page': undefined}>{label}</button>
+}
+
+function Sidebar() {
+  return <nav>
+    <NavItem href='/' label='Homepage' isActive />
+    <NavItem href='/blog' label='Blog' />
+  </nav>
+}
+```
+
+### Special props
+
+#### className
+
+As `class` is a reserved keyword in Javascript it has been replaced with `className`:
+
+```tsx
+function MyComponent() {
+  return <button className="btn btn-primary">Click me!</button>
+}
+```
+
+```html
+<button class="btn btn-primary">Click me!</button>
+```
+
+The className prop also accept objects where the keys are the className and their value a boolean defining if the className should be active or not.
+
+```tsx
+function MyComponent({ disabled }: { disabled: boolean }) {
+  return (
+    <button
+      className={{
+        'btn-disabled': disabled,
+      }}
+    >
+      Click me!
+    </button>
+  )
+}
+```
+
+You can also combine objects and strings by providing an array.
+
+```tsx
+function MyComponent({ disabled }: { disabled: boolean }) {
+  return (
+    <button
+      className={[
+        'btn btn-primary',
+        {
+          'btn-disabled': disabled,
+        },
+      ]}
+    >
+      Click me!
+    </button>
+  )
+}
+```
+
+<Callout>
+  Under the hood Osmos uses [clsx](https://www.npmjs.com/package/clsx) and
+  [tailwind-merge](https://www.npmjs.com/package/tailwind-merge) making this Tailwind compatible!
+</Callout>
+
+#### children
+
+The `children` prop can be passed as the inner value of a JSX.Element:
+
+```tsx
+function Button({ chilren }: { children?: OsmosNode }) {
+  return <button className="btn btn-primary">{children}</button>
+}
+
+function App() {
+  return <Button>Click me!</Button>
+}
+```
+
+Here we are only accepting a `OsmosNode` which correspond to anything that can be rendered by Osmos but it can be anything:
+
+```tsx
+function BeautifulDate({ chilren }: { children: Date }) {
+  const formatter = new Intl.DateTimeFormat('fr-FR')
+
+  return <span>{formatter.format(children)}</span>
+}
+
+function App() {
+  const now = new Date()
+
+  return <BeautifulDate>{now}</BeautifulDate>
+}
+```
+
+<Callout>
+  You can use the utility type `PropsWithChildren<{}>` for making your code more readable.
+</Callout>
+
+#### style
+
+The `style` prop can accept an object that will be stringified as a native HTML style attribute:
+
+```tsx
+function Button() {
+  return (
+    <button
+      style={{
+        color: 'red',
+        backgroundColor: 'blue',
+      }}
+    >
+      Click me!
+    </button>
+  )
+}
+```
+
+### Props Drilling
+
+When building interfaces using composition, it is common to pass down all props to the children.
+You can use the `ComponentProps<>` utility type to get the props of a component in addition of the "spread" operator.
+
+It accept the HTML tag directly:
+
+```tsx
+function Button({ className, ...props }: ComponentProps<'button'>) {
+  return <button className={['btn btn-primary', className]} {...props} />
+}
+```
+
+Or the component type:
+
+```tsx
+function PrimaryButton({ className, ...props }: ComponentProps<typeof Button>) {
+  return <button className={['btn-primary', className]} {...props} />
+}
+
+function Button({ className, ...props }: ComponentProps<'button'>) {
+  return <button className={['btn', className]} {...props} />
+}
+```
+
+## Async Components
+
+Components can be asynchronous allowing you to easily generate dynamic interfaces by fetching data
+or performing operations directly from your server.
+
+```tsx
+async function UsersList() {
+  const users = await User.all()
+
+  return (
+    <ul>
+      {users.map((user) => (
+        <li>{user.name}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
+### Generator functions
+
+You can use `Generator` and `AsyncGenerator` functions as components:
+
+```tsx
+async function* Conversation() {
+  yield <div>This feature is</div>
+  await sleep(100)
+  yield <div>perfect for</div>
+  await sleep(100)
+  yield <div>building AI chat bots</div>
+}
+
+function App() {
+  return (
+    <div>
+      <Conversation />
+    </div>
+  )
+}
+```
+
+<Callout>
+  When using the streaming feature your client will receive the HTML by chunk as soon as it is
+  available.
+</Callout>
+
+## Rendering
+
+### `renderToString`
+
+The `renderToString` method is the simplest way to render JSX to HTML.
+The drawback is that it must wait for your whole tree to be rendered before returning the HTML.
+
+```tsx
+import { renderToString } from '@osmosjs/osmos'
+
+const html = await renderToString(<App />)
+```
+
+### `renderToReadableStream`
+
+The `renderToReadableStream` returns a stream that receive the HTML by chunk as soon as it is available.
+
+```tsx
+import { renderToReadableStream } from '@osmosjs/osmos'
+
+const html = renderToReadableStream(<App />)
+```

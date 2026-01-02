@@ -1,0 +1,46 @@
+{
+  "name": "osmos",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "typecheck": "turbo typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "automd": "automd"
+  },
+  "packageManager": "yarn@4.12.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "resolutions": {
+    "eslint-mdx": "3.2.0",
+    "eslint-plugin-mdx": "3.2.0"
+  },
+  "manypkg": {
+    "defaultBranch": "main"
+  },
+  "prettier": "@adonisjs/prettier-config",
+  "devDependencies": {
+    "@adonisjs/prettier-config": "^1.4.5",
+    "@changesets/changelog-github": "^0.5.2",
+    "@changesets/cli": "^2.29.8",
+    "@manypkg/cli": "^0.25.1",
+    "@osmosjs/eslint-config": "workspace:*",
+    "@osmosjs/typescript-config": "workspace:*",
+    "automd": "^0.4.2",
+    "eslint": "^9.39.2",
+    "mdbox": "^0.1.1",
+    "node-gyp": "^12.1.0",
+    "prettier": "^3.7.4",
+    "turbo": "^2.6.3",
+    "typescript": "^5.9.3"
+  },
+  "workspaces": [
+    "docs",
+    "playgrounds/*",
+    "packages/*",
+    "tooling/*"
+  ]
+}

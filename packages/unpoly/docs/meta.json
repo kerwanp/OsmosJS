@@ -1,0 +1,6 @@
+{
+  "title": "Unpoly Integration",
+  "icon": "hgi hgi-stroke hgi-plug-01",
+  "description": "Unpoly integration for OsmosJS with Network Protocol implementation",
+  "pages": ["index", "getting-started", "---Advanced---"]
+}

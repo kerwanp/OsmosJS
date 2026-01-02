@@ -1,0 +1,37 @@
+:root {
+  --search-input-height: 35px;
+  --docsearch-modal-background: var(--color-card);
+  --docsearch-modal-foreground: var(--color-card-foreground);
+  --docsearch-footer-background: var(--color-accent);
+  --docsearch-subtle-color: var(--color-border);
+  --docsearch-searchbox-focus-background: var(--color-accent);
+  --docsearch-icon-color: var(--color-muted-foreground);
+  --docsearch-text-color: var(--color-foreground);
+  --docsearch-secondary-text-color: var(--color-muted-foreground);
+  --docsearch-hit-background: var(--color-accent);
+  --docsearch-hit-highlight-color: color-mix(in oklab, var(--color-foreground) 15%, transparent);
+  --docsearch-highlight-color: var(--color-primary);
+  --docsearch-hit-color: var(--color-muted-foreground);
+  --docsearch-muted-color: var(--color-muted-foreground);
+}
+
+.DocSearch-Button {
+  display: flex;
+  height: var(--search-input-height);
+
+  @apply rounded-full bg-accent border-border text-muted-foreground w-full;
+}
+
+.DocSearch-Input::placeholder {
+  @apply text-muted-foreground;
+}
+
+.DocSearch-Button-Key,
+.DocSearch-Commands-Key {
+  @apply bg-card border border-border text-xs text-muted-foreground rounded-md;
+}
+
+.DocSearch-Modal {
+  color: var(--docsearch-modal-foreground);
+  @apply border rounded-lg overflow-hidden;
+}

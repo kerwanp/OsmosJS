@@ -1,0 +1,56 @@
+---
+title: Getting Started
+description: Learn how to get started with Osmos.
+icon: hgi hgi-stroke hgi-rocket-01
+---
+
+## Installation
+
+Install the package using the following command :
+
+```package-install
+yarn add @osmosjs/osmos@alpha
+```
+
+Inside your `tsconfig.json`, allow usage of "jsx" and specify the `jsxImportSource` to use Osmos as your JSX runtime:
+
+```json title="tsconfig.json"
+{
+  "compileOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "@osmosjs/osmos"
+  }
+}
+```
+
+## Getting Started
+
+Later you will learn the full capabilities of Osmos. For the moment lets render a simple html page with the most simple JSX.
+
+```tsx tab="Typescript"
+const App = () => {
+  return (
+    <html>
+      <body>
+        <h1>Hello Osmos users!</h1>
+      </body>
+    </html>
+  )
+}
+
+const html = await renderToString(<App />)
+```
+
+```html tab="html"
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>Hello Osmos users!</h1>
+  </body>
+</html>
+```
+
+<Callout>
+  `renderToString` can be used to render to string. You can also use `renderToReadableStream` to
+  stream content.
+</Callout>

@@ -1,0 +1,10 @@
+{
+  "extends": "@osmosjs/typescript-config/adonis.package.json",
+  "compilerOptions": {
+    "rootDir": "./",
+    "outDir": "./build",
+    "lib": ["ESNext", "DOM"],
+    "jsx": "preserve",
+    "types": ["@adonisjs/shield/shield_middleware"]
+  }
+}

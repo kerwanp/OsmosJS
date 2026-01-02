@@ -1,0 +1,6 @@
+{
+  "title": "AdonisJS Integration",
+  "icon": "hgi hgi-stroke hgi-plug-01",
+  "description": "Build modern applications using AdonisJS and Osmos",
+  "pages": ["index", "getting-started", "---Guides---", "forms", "vite"]
+}

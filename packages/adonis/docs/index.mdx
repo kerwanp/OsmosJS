@@ -1,0 +1,38 @@
+---
+title: Introduction
+description: Build applications using Osmos and AdonisJS
+icon: hgi hgi-stroke hgi-play-square
+---
+
+OsmosJS is a light-weight and agnostic server-side [JSX](https://en.wikipedia.org/wiki/JavaScript_XML) runtime.
+This integration provides all the necessary tools to build AdonisJS applications with OsmosJS.
+
+It is highly recommended to first [discover OsmosJS](/docs/osmos) before starting with the AdonisJS integration.
+
+```tsx
+const LoginForm = async () => {
+  const adonis = Adonis.getOrFail()
+  const form = await adonis.form(LoginSchema)
+
+  if (form.isSubmitted && form.isValid) {
+    const user = await User.verifyCredentials(form.parsed.email, form.parsed.password)
+    await adonis.context.auth.login(user)
+    return adonis.redirect('/')
+  }
+
+  return (
+    <Form form={form}>
+      <input type="email" {...form.field('email')} />
+      <input type="password" {...form.field('password')} />
+
+      <button type="submit">Login</button>
+    </Form>
+  )
+}
+```
+
+```ts title="routes.ts"
+router.get('/login', ({ osmos }) => {
+  return osmos.render(LoginForm)
+})
+```

@@ -1,0 +1,16 @@
+{
+  "mode": "pre",
+  "tag": "alpha",
+  "initialVersions": {
+    "docs": "0.0.0",
+    "@osmosjs/adonis": "0.0.0",
+    "@osmosjs/osmos": "0.0.0",
+    "@osmosjs/osmosis": "0.0.0",
+    "@osmosjs/unpoly": "0.0.0",
+    "@osmosjs/eslint-config": "0.0.2",
+    "@osmosjs/typescript-config": "0.0.0"
+  },
+  "changesets": [
+    "silly-cups-smash"
+  ]
+}

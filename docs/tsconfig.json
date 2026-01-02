@@ -1,0 +1,11 @@
+{
+  "extends": "@adonisjs/tsconfig/tsconfig.app.json",
+  "compilerOptions": {
+    "rootDir": "./",
+    "outDir": "./build",
+    "jsx": "react-jsx",
+    "jsxImportSource": "@osmosjs/osmos",
+    "lib": ["DOM", "ESNext", "DOM.Iterable", "ES2020"],
+    "types": ["@osmosjs/unpoly"]
+  }
+}

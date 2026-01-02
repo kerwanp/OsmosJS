@@ -1,0 +1,15 @@
+{
+  "title": "OsmosJS",
+  "description": "Light-weight server-side JSX runtime",
+  "icon": "hgi hgi-stroke hgi-star",
+  "pages": [
+    "index",
+    "getting-started",
+    "---Guides---",
+    "components",
+    "context",
+    "tags",
+    "custom-renderer",
+    "---Integrations---"
+  ]
+}

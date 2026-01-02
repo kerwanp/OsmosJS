@@ -1,0 +1,89 @@
+---
+title: Forms
+description: Build and handle forms with validation directly in your components.
+---
+
+## Introduction
+
+Handling forms can be tedious as it usually requires having multiple routes (`GET` and `POST`) and manage form handling separately from displaying it.
+
+With the Adonis integration you can handle forms directly from your components without creating multiple routes.
+Allowing you to not only compose your frontend but also the business logic attached to it.
+
+## Getting Started
+
+### Creating the Form
+
+Forms are defined using a validator. In our case we will use [VineJS](https://vinejs.dev) but you can use any library that support [Standard Schema](https://standardschema.dev/).
+
+```tsx
+import vine from '@vinejs/vine'
+import { Adonis } from '@osmosjs/adonis'
+
+const NewsletterFormSchema = vine.create({
+  email: vine.string().email(),
+})
+
+const NewsletterForm = () => {
+  const adonis = Adonis.getOrFail()
+  const form = await adonis.form(NewsletterFormSchema)
+}
+```
+
+The reason why we have to `await` is that when your component is rendered it will check if the request is submitting data and automatically validate it for you.
+
+### Rendering the Form
+
+We can use the created Form to render the HTML. We set the `method` (defaults to `POST`) and `action` (defaults to `undefined`) using our Form.
+Additionnaly we can use the `form.field()` utility function that return input attributes (name, value, etc).
+
+```tsx
+const NewsletterForm = () => {
+  const adonis = Adonis.getOrFail()
+  const form = await adonis.form(NewsletterFormSchema)
+
+  return (
+    <form method={form.method} action={form.action}>
+      <input type="email" {...form.field('email')} />
+
+      <button type="submit">Login</button>
+    </form>
+  )
+}
+```
+
+### Handling the Form
+
+When the user submit the form, a request is made to the same route and re-render the application. When our `LoginForm` is rendered
+it will automatically validate the data against the provided schema.
+
+It is then possible to perform actions using the data parsed (and validated) from the request.
+
+In our case we will add an entry to the database with the provided email and return a sucess message instead of the form.
+
+```tsx
+const NewsletterForm = () => {
+  const adonis = Adonis.getOrFail()
+  const form = await adonis.form(NewsletterFormSchema)
+
+  if (form.isSubmitted && form.isValid) {
+    await NewsletterRegistration.create({
+      email: form.parsed.email,
+    })
+
+    return <div>You have been registered to the newsletter!</div>
+  }
+
+  return (
+    <form method={form.method} action={form.action}>
+      <input type="email" {...form.field('email')} />
+
+      <button type="submit">Login</button>
+    </form>
+  )
+}
+```
+
+## Handling Errors
+
+## API

@@ -1,0 +1,16 @@
+<div class="flash-container">
+  @errors()
+    @each((message, code) in $messages)
+      @if(code !== 'E_VALIDATION_ERROR')
+        @alert.root({ variant: 'destructive', autoDismiss: true })
+          @!alert.description({ text: message })
+        @end
+      @end
+    @end
+  @end
+  @if(flashMessages.has('success'))
+    @alert.root({ variant: 'success', autoDismiss: true })
+      @!alert.description({ text: flashMessages.get('success') })
+    @end
+  @end
+</div>

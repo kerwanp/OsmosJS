@@ -1,0 +1,114 @@
+{
+  "name": "@osmosjs/osmosis",
+  "description": "Build documentation websites powered by Osmos and AdonisJS",
+  "version": "0.0.1-alpha.0",
+  "engines": {
+    "node": ">=20.6.0"
+  },
+  "type": "module",
+  "files": [
+    "build",
+    "!build/bin",
+    "!build/tests"
+  ],
+  "exports": {
+    ".": "./build/modules/index.js",
+    "./plugins": "./build/modules/plugins.js",
+    "./loaders": "./build/modules/loaders.js",
+    "./collections": "./build/modules/collections.js",
+    "./osmosis_provider": "./build/providers/osmosis_provider.js"
+  },
+  "scripts": {
+    "clean": "del-cli build",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "quick:test": "node --import=./tsnode.esm.js --enable-source-maps bin/test.ts",
+    "test": "c8 yarn quick:test",
+    "build": "yarn clean && tsc",
+    "dev": "tsc --watch",
+    "version": "yarn build",
+    "prepublishOnly": "yarn build"
+  },
+  "keywords": [
+    "osmos",
+    "osmosjs",
+    "osmosis",
+    "docs",
+    "documentation",
+    "adonis",
+    "adonisjs",
+    "typescript"
+  ],
+  "author": {
+    "name": "Martin Paucot",
+    "email": "contact@martin-paucot.fr"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kerwanp/osmosjs",
+    "directory": "packages/osmosis"
+  },
+  "bugs": {
+    "url": "https://github.com/kerwanp/osmosjs/issues"
+  },
+  "homepage": "https://osmosjs.run",
+  "license": "MIT",
+  "devDependencies": {
+    "@adonisjs/assembler": "^8.0.0-next.26",
+    "@adonisjs/core": "^7.0.0-next.17",
+    "@japa/assert": "^4.2.0",
+    "@japa/expect": "^3.0.7",
+    "@japa/expect-type": "^2.0.4",
+    "@japa/file-system": "^3.0.0",
+    "@japa/runner": "^4.0.0",
+    "@osmosjs/osmos": "workspace:*",
+    "@swc/core": "1.15.5",
+    "@types/escape-html": "^1",
+    "@types/lodash.get": "^4",
+    "@types/mdast": "^3",
+    "@types/node": "^25.0.2",
+    "c8": "^10.1.3",
+    "copyfiles": "^2.4.1",
+    "del-cli": "^7.0.0",
+    "prettier": "^3.7.4",
+    "reflect-metadata": "^0.2.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@adonisjs/content": "^1.5.0",
+    "@osmosjs/adonis": "workspace:*",
+    "@osmosjs/osmos": "workspace:*",
+    "@shikijs/rehype": "^3.20.0",
+    "@shikijs/transformers": "^3.20.0",
+    "@vinejs/vine": "^4.2.0",
+    "estree-util-value-to-estree": "^3.5.0",
+    "github-slugger": "^2.0.0",
+    "mdast": "^3.0.0",
+    "npm-to-yarn": "^3.0.1",
+    "octokit": "^5.0.5",
+    "shiki": "^3.20.0",
+    "to-vfile": "^8.0.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0",
+    "vfile": "^6.0.3"
+  },
+  "peerDependencies": {
+    "@adonisjs/core": "^7.0.0-next.17",
+    "@osmosjs/osmos": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "tag": "latest"
+  },
+  "c8": {
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "exclude": [
+      "tests/**"
+    ]
+  }
+}
