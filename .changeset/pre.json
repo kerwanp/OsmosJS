@@ -11,6 +11,7 @@
     "@osmosjs/typescript-config": "0.0.0"
   },
   "changesets": [
+    "floppy-jokes-heal",
     "shy-foxes-rule",
     "silly-cups-smash"
   ]
