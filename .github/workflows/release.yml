@@ -30,6 +30,12 @@ jobs:
       - name: 📦 Install Node dependencies
         run: yarn install --frozen-lockfile
       - run: yarn build --filter="./packages/*"
+      - name: Update npm for Trusted Publishers
+        run: npm install -g npm@latest
+      - name: Setup npm for publishing
+        run: |
+          echo "//registry.npmjs.org/:_authToken=" >> ~/.npmrc
+          echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
       - uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba # v1.5.3
         with:
           version: yarn changeset version
