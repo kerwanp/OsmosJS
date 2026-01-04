@@ -77,8 +77,7 @@
   },
   "publishConfig": {
     "access": "public",
-    "tag": "latest",
-    "provenance": true
+    "tag": "latest"
   },
   "c8": {
     "reporter": [
