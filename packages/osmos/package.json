@@ -24,9 +24,7 @@
     "quick:test": "node --import=./tsnode.esm.js --enable-source-maps bin/test.ts",
     "test": "c8 yarn quick:test",
     "build": "tsdown --clean",
-    "dev": "tsdown --watch --sourcemap",
-    "version": "yarn build",
-    "prepublishOnly": "yarn build"
+    "dev": "tsdown --watch --sourcemap"
   },
   "keywords": [
     "osmos",
