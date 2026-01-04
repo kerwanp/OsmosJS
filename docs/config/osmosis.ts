@@ -24,13 +24,13 @@ export default defineConfig({
         path: new URL('../../packages/adonis/docs/', import.meta.url),
       }),
     },
-    {
-      prefix: '/docs/unpoly',
-      githubUrl: 'https://github.com/kerwanp/OsmosJS/tree/main/packages/unpoly/docs',
-      source: sources.fs({
-        path: new URL('../../packages/unpoly/docs/', import.meta.url),
-      }),
-    },
+    // {
+    //   prefix: '/docs/unpoly',
+    //   githubUrl: 'https://github.com/kerwanp/OsmosJS/tree/main/packages/unpoly/docs',
+    //   source: sources.fs({
+    //     path: new URL('../../packages/unpoly/docs/', import.meta.url),
+    //   }),
+    // },
     {
       prefix: '/docs/osmosis',
       githubUrl: 'https://github.com/kerwanp/OsmosJS/tree/main/packages/osmosis/docs',
