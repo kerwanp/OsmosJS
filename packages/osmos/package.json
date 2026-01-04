@@ -41,7 +41,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kerwanp/osmosjs",
+    "url": "git+https://github.com/kerwanp/osmosjs.git",
     "directory": "packages/osmos"
   },
   "bugs": {
