@@ -5,11 +5,15 @@
   "pages": [
     "index",
     "getting-started",
+    "reference",
     "---Guides---",
     "components",
     "context",
-    "tags",
-    "custom-renderer",
-    "---Integrations---"
-  ]
+    "---Advanced---",
+    "custom-renderer"
+  ],
+  "socials": {
+    "github": "https://github.com/kerwanp/OsmosJS/tree/main/packages/osmos",
+    "npm": "https://www.npmjs.com/package/@osmosjs/osmos"
+  }
 }

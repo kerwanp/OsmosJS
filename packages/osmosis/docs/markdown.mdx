@@ -1,5 +1,112 @@
 ---
 title: Markdown
+description: Write beautiful documentation pages with Markdown.
 ---
 
 ## Introduction
+
+Osmosis uses [MDX](https://mdxjs.com/) allowing you to use JSX in your markdown content to build comprehensive and powerful documentation pages.
+It also provides a large set of custom plugins to extend the Markdown features.
+
+> [!NOTE]
+> Osmosis tries to stick as close as possible to the [Github Flavored Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) to keep your content readable directly on Github.
+
+## Syntax
+
+### Frontmatter
+
+Frontmatter allows you to attach data do a document using the YAML syntax.
+
+```mdx
+---
+title: Document Title
+---
+
+Document content
+```
+
+## Callouts
+
+Callouts (also called admonitions or alerts) can be used to emphasize critical information.
+
+```mdx
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
+
+> [!TIP] Optional title
+> Helpful advice for doing things better or more easily.
+
+> [!IDEA]
+> Some ideas to guide users in a potential direction
+
+> [!WARNING]
+> Urgent info that needs immediate user attention to avoid problems.
+
+> [!CAUTION]
+> Advises about risks or negative outcomes of certain actions.
+```
+
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
+
+> [!TIP] Optional title
+> Helpful advice for doing things better or more easily.
+
+> [!IDEA]
+> Some ideas to guide users in a potential direction
+
+> [!WARNING]
+> Urgent info that needs immediate user attention to avoid problems.
+
+> [!CAUTION]
+> Advises about risks or negative outcomes of certain actions.
+
+## Codeblocks
+
+Syntax highlighting is supported out of the box using [@shikijs/rehype](https://shiki.matsu.io/packages/rehype).
+
+````mdx
+```js
+console.log('Hello World')
+```
+
+```js title="My Title"
+console.log('Hello World')
+```
+````
+
+### Tab Groups
+
+Subsequent codeblocks with `tab=<name>` are merged into tabs.
+
+````mdx
+```jsx tab="Tab 1"
+console.log('Tab 1')
+```
+
+```js tab="Tab 2"
+console.log('Tab 2')
+```
+````
+
+```jsx tab="Tab 1"
+console.log('Tab 1')
+```
+
+```js tab="Tab 2"
+console.log('Tab 2')
+```
+
+## Package install
+
+Automatically generate codeblocks for package installs with `package-install`.
+
+````mdx
+```package-install
+npm i @osmosjs/osmos
+```
+````
+
+```package-install
+npm i @osmosjs/osmos
+```

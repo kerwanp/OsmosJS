@@ -1,0 +1,125 @@
+---
+title: Configuration
+---
+
+## Introduction
+
+## Documentation
+
+The `documentation` option allows you to configure your documentation.
+
+```ts title="osmosis.config.ts"
+export default defineConfig({
+  documentation: {
+    prefix: '/docs',
+    githubUrl: 'https://github.com/kerwanp/OsmosJS/tree/main/packages/osmos/docs',
+    source: sources.fs({
+      path: new URL('./docs', import.meta.url),
+    }),
+  },
+})
+```
+
+The `prefix` defines the URL prefix where your documentation will be served.
+
+The `source` defines where your documentation files are located.
+
+The `githubUrl` is used for the "Edit on Github" button to welcome contributions.
+
+### Multi-docs
+
+It is possible to configure multiple documentations. Useful when you want to build a website for multiple packages.
+
+```ts title="osmosis.config.ts"
+export default defineConfig({
+  documentation: [
+    {
+      prefix: '/docs',
+      source: sources.github({
+        owner: 'adonisjs',
+        repo: 'inertia',
+        ref: 'main',
+        path: 'docs',
+      }),
+    },
+    {
+      prefix: '/docs',
+      source: sources.github({
+        owner: 'adonisjs',
+        repo: 'transmit',
+        ref: 'main',
+        path: 'docs',
+      }),
+    },
+  ],
+})
+```
+
+### Sources
+
+#### fs
+
+The `FSSource` loads documentation from the local file-system. It receives a path that should be pointing to a folder containing a `meta.json` file.
+
+```ts
+import { sources } from '@osmosjs/osmosis'
+
+sources.fs({
+  path: new URL('./docs', import.meta.url),
+})
+```
+
+#### github
+
+The `GithubSource` loads documentation from a Github repository.
+It is useful when your documentation website is located in a repository different from your packages.
+
+```ts
+import { sources } from '@osmosjs/osmosis'
+
+sources.github({
+  owner: 'adonisjs',
+  repo: 'core',
+  path: 'docs',
+  ref: 'main',
+  token: '<github_token>',
+})
+```
+
+> [!NOTE]
+> It is highly recommended to configure a Github token to avoid getting rate limited.
+
+## Markdown
+
+The `markdown` option allows you to configure how Markdown is compiled by providing [rehype](https://github.com/rehypejs/rehype) and [remark](https://github.com/remarkjs/remark) plugins.
+
+```ts
+import { defineConfig } from '@osmosjs/osmosis'
+import { defaultPlugins } from '@osmosjs/osmosis/mdx'
+
+export default defineConfig({
+  markdown: {
+    rehypePlugins: defaultPlugins.rehypePlugins,
+    remarkPlugins: defaultPlugins.remarkPlugins,
+  },
+})
+```
+
+## Static-site generation
+
+Unlike typical AdonisJS applications, Osmosis create static websites by exporting every page to a `.html` file.
+It works by starting your application and fetching each page to generate the HTML and saving it in the `build` folder.
+
+This is perfect for hosting on solutions like [Netlify](https://www.netlify.com/) or [Github Pages](https://docs.github.com/en/pages).
+
+You can configure the generation behavior with the `export` option.
+
+```ts
+export default defineConfig({
+  export: {
+    knownUrls: ['/', '/blog'],
+  },
+})
+```
+
+The `knownUrls` options allows you to generate `.html` files for pages that are not managed by Osmosis.

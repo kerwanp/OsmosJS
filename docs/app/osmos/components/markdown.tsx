@@ -1,6 +1,6 @@
 import { ComponentProps } from '@osmosjs/osmos'
 import { CodeBlock } from './code_block.tsx'
-import { Callout } from './callout.tsx'
+import { Callout, CalloutContent, CalloutDescription, CalloutTitle } from '@osmosjs/osmosis/ui'
 import { ConfigurationSteps } from './configuration_steps.tsx'
 import { Tab, Tabs, TabsList, TabsListTrigger } from './tabs.tsx'
 
@@ -16,7 +16,11 @@ const Heading = ({
   const Comp = as ?? 'div'
 
   return (
-    <Comp id={id} className={['flex scroll-m-28 flex-row items-center gap-2', className]}>
+    <Comp
+      id={id}
+      className={['flex scroll-m-28 flex-row items-center gap-2', className]}
+      {...props}
+    >
       <a href={`#${id}`} className="peer no-underline" up-follow>
         {children}
       </a>
@@ -37,6 +41,9 @@ export const MARKDOWN_COMPONENTS = {
   pre: CodeBlock,
 
   Callout,
+  CalloutContent,
+  CalloutTitle,
+  CalloutDescription,
   ConfigurationSteps,
   CodeBlockTabs: Tabs,
   CodeBlockTab: (props: ComponentProps<typeof Tab>) => <Tab className="py-0" {...props} />,

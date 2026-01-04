@@ -71,6 +71,7 @@
     "@tailwindcss/vite": "^4.1.18",
     "@vinejs/vine": "^4.2.0",
     "better-sqlite3": "^12.5.0",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "edge.js": "^6.4.0",
     "globby": "^16.1.0",

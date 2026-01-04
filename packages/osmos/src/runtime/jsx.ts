@@ -7,6 +7,7 @@ export function jsx(tag: OsmosElement['type'], props: any, key?: string | number
   }
 
   return {
+    [Symbol.toStringTag]: 'OsmosElement',
     $$typeof: VNODE_SYMBOL,
     type: tag,
     props,

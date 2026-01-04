@@ -20,7 +20,7 @@ interface PackageManager {
 
 export interface RemarkNpmOptions {
   /**
-   * Persist Tab value (Fumadocs UI only)
+   * Persist Tab value
    *
    * @defaultValue false
    */

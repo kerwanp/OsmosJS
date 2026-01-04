@@ -20,14 +20,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * Status pages is a collection of error code range and a callback
    * to return the HTML contents to send as a response.
    */
-  protected statusPages: Record<StatusPageRange, StatusPageRenderer> = {
-    '404': (error, { view }) => {
-      return view.render('pages/errors/not_found', { error })
-    },
-    '500..599': (error, { view }) => {
-      return view.render('pages/errors/server_error', { error })
-    },
-  }
+  protected statusPages: Record<StatusPageRange, StatusPageRenderer> = {}
 
   /**
    * The method is used for handling errors and returning

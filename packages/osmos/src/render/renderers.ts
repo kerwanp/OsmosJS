@@ -1,10 +1,16 @@
 import { type RendererFn } from './renderer.js'
-import { escapeHTML, isJSXElement } from '../utils.js'
 import is from '@sindresorhus/is'
 import { type OsmosNode } from '../types/jsx.js'
 import { renderHTMLElement } from './html.js'
-import { VNODE_CONTEXT_SYMBOL, VNODE_FRAGMENT_SYMBOL, VNODE_HTML_TAG } from '../symbols.js'
+import {
+  VNODE_CONTEXT_SYMBOL,
+  VNODE_ERROR_BOUNDARY,
+  VNODE_FRAGMENT_SYMBOL,
+  VNODE_HTML_TAG,
+} from '../symbols.js'
 import { type AsyncLocalStorage } from 'node:async_hooks'
+import { escapeHTML } from '../utils/escape_html.js'
+import { isJSXElement } from '../utils/is_jsx_element.js'
 
 export const LiteralsRenderer: RendererFn = {
   name: 'osmos.literals',
@@ -24,13 +30,6 @@ export const LiteralsRenderer: RendererFn = {
       return renderer.write(escapeHTML(node.toString()))
     }
 
-    return false
-  },
-}
-
-export const IterableRenderer: RendererFn = {
-  name: 'osmos.iterable',
-  async render(node, renderer) {
     if (is.iterable(node)) {
       for (const child of node) {
         await renderer.render(child)
@@ -39,21 +38,15 @@ export const IterableRenderer: RendererFn = {
       return true
     }
 
-    return false
-  },
-}
-
-export const AsyncRenderer: RendererFn = {
-  name: 'osmos.async',
-  async render(node, renderer) {
     if (is.promise(node)) {
       return renderer.render(await node)
     }
 
     if (is.asyncGenerator(node)) {
       for await (const child of node) {
-        return renderer.render(child as OsmosNode)
+        await renderer.render(child as OsmosNode)
       }
+      return true
     }
 
     return false
@@ -71,19 +64,19 @@ export const JSXRenderer: RendererFn = {
 
     if (is.symbol(node.type)) {
       if (node.type === VNODE_HTML_TAG) {
-        if (!('innerHTML' in node.props) || typeof node.props.innerHTML !== 'string') {
-          return true
+        if ('innerHTML' in node.props && typeof node.props.innerHTML === 'string') {
+          renderer.write(node.props.innerHTML)
         }
 
-        return renderer.write(node.props.innerHTML)
+        return true
       }
 
       if (node.type === VNODE_FRAGMENT_SYMBOL) {
-        if (!('children' in node.props)) {
-          return true
+        if ('children' in node.props) {
+          await renderer.render(node.props.children as OsmosNode)
         }
 
-        return renderer.render(node.props.children as OsmosNode)
+        return true
       }
 
       if (node.type === VNODE_CONTEXT_SYMBOL) {
@@ -106,11 +99,29 @@ export const JSXRenderer: RendererFn = {
         })
       }
 
+      if (node.type === VNODE_ERROR_BOUNDARY) {
+        if ('children' in node.props) {
+          try {
+            await renderer.render(node.props.children as OsmosNode)
+          } catch (error) {
+            if ('fallback' in node.props) {
+              if (is.function(node.props.fallback)) {
+                await renderer.render(node.props.fallback(error) as OsmosNode)
+              } else {
+                await renderer.render(node.props.fallback as OsmosNode)
+              }
+            }
+          }
+
+          return true
+        }
+      }
+
       return false
     }
 
     if (is.function(node.type)) {
-      const result = node.type.call(renderer.options.osmos, node.props)
+      const result = node.type.call(renderer, node.props)
       return renderer.render(result)
     }
 

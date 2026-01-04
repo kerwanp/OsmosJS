@@ -1,4 +1,5 @@
-import { escapeHTML, normalizeAttributes } from '../utils.js'
+import { escapeHTML } from '../utils/escape_html.js'
+import { normalizeProps } from '../utils/normalize_props.js'
 import { type OsmosRenderer } from './renderer.js'
 
 const selfClosingTags = new Set(
@@ -16,7 +17,7 @@ export async function renderHTMLElement(
   props: any = {},
   context: OsmosRenderer
 ): Promise<boolean> {
-  const { children, ...attributes } = normalizeAttributes(props)
+  const { children, ...attributes } = normalizeProps(props)
 
   if (tag === 'html') {
     context.write('<!DOCTYPE html>')

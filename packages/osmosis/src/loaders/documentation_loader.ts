@@ -1,20 +1,38 @@
 import { type LoaderContract } from '@adonisjs/content/types'
-import vine from '@vinejs/vine'
+import vine, { type BaseLiteralType } from '@vinejs/vine'
 import { compile, run } from '@mdx-js/mdx'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
-import * as runtime from '@osmosjs/osmos/jsx-runtime'
 import { basename, dirname, extname, join } from 'node:path'
-import { rehypeCode, remarkCodeTab, remarkHeading, remarkInstall } from '@osmosjs/osmosis/plugins'
 import { type Infer } from '@vinejs/vine/types'
 import { type SourceFactory, type SourceContract } from '../types.js'
 import { type VFile } from 'vfile'
+import { remarkHeading, type TOCItemType } from '../plugins/remark_heading.js'
+import { remarkInstall } from '../plugins/remark_install.js'
+import { remarkCodeTab } from '../plugins/remark_code_tab.js'
+import { remarkCallout } from '../plugins/remark_callout.js'
+import { rehypeCode } from '../plugins/rehype_code.js'
+import { matter } from 'vfile-matter'
+import { defaultPlugins } from '../../modules/plugins.js'
+import * as runtime from '@osmosjs/osmos/jsx-runtime'
+import { type MDXContent } from 'mdx/types.js'
+
+export type PageLoadFn = () => Promise<{ toc: TOCItemType[] | undefined; Markdown: MDXContent }>
+
+export const SocialsSchema = vine.object({
+  github: vine.string().optional(),
+  x: vine.string().optional(),
+  npm: vine.string().optional(),
+  discord: vine.string().optional(),
+})
 
 export const MetaFileSchema = vine.object({
   title: vine.string(),
   description: vine.string(),
   pages: vine.array(vine.string()),
   icon: vine.string().optional(),
+
+  socials: SocialsSchema.optional(),
 })
 
 export const PageFrontmatterSchema = vine.object({
@@ -42,8 +60,9 @@ export const PageSchema = vine.object({
   slug: vine.string(),
   githubUrl: vine.string(),
 
-  content: vine.any(),
-  toc: vine.any(),
+  load: vine.any() as BaseLiteralType<PageLoadFn, PageLoadFn, any>,
+
+  value: vine.string(),
 })
 
 export const DocumentationSchema = vine.object({
@@ -54,6 +73,8 @@ export const DocumentationSchema = vine.object({
 
   pages: vine.array(PageSchema),
   menu: vine.array(MenuCategorySchema),
+
+  socials: SocialsSchema.optional(),
 })
 
 export type DocumentationMeta = Infer<typeof MetaFileSchema>
@@ -108,6 +129,7 @@ export class DocumentationLoader implements LoaderContract<typeof DocumentationS
 
         pages,
         menu,
+        socials: meta.socials,
       },
       meta: validatorMetaData,
     })
@@ -120,27 +142,39 @@ export class DocumentationLoader implements LoaderContract<typeof DocumentationS
     for (const file of files.filter((entry) => entry.extname === '.mdx')) {
       await source.read(file)
 
-      const content = await this.compileMDX(file.value.toString())
-
-      const result: any = await run(content, {
-        ...runtime,
-        baseUrl: import.meta.url,
-      })
+      matter(file)
 
       const frontmatter = await vine.validate({
         schema: PageFrontmatterSchema,
-        data: result.frontmatter,
+        data: file.data.matter,
       })
 
       pages.push({
         path: file.data.relativePath ?? file.path,
         slug: this.#pathToSlug(file.data.relativePath || file.path),
         githubUrl: join(this.options.githubUrl, file.data.relativePath ?? file.path),
+        value: file.value.toString(),
+
+        load: async () => {
+          const compiled = await compile(file.value.toString(), {
+            outputFormat: 'function-body',
+            jsxImportSource: '@osmosjs/osmos',
+            remarkPlugins: defaultPlugins.remarkPlugins,
+            rehypePlugins: defaultPlugins.rehypePlugins,
+          })
+
+          const { default: Markdown } = await run(compiled, {
+            ...runtime,
+            baseUrl: import.meta.url,
+          })
+
+          return {
+            Markdown,
+            toc: compiled.data.toc,
+          }
+        },
 
         ...frontmatter,
-
-        content: result.default,
-        toc: content.data.toc,
       })
     }
 
@@ -234,8 +268,9 @@ export class DocumentationLoader implements LoaderContract<typeof DocumentationS
         remarkHeading,
         remarkInstall,
         remarkCodeTab,
+        remarkCallout,
       ],
-      rehypePlugins: [[rehypeCode]],
+      rehypePlugins: [rehypeCode],
     })
 
     return file

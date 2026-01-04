@@ -42,8 +42,12 @@ export class Adonis {
   /**
    * Resolves services from request container.
    *
+   * @param bindings - one ore multiple container bindings to resolve
+   *
+   * @returns the resolved container bindings
+   *
    * @example
-   * const [encryption] = await this.resolve('encryption')
+   * const encryption = await this.resolve('encryption')
    * const [stripe, encryption] = await this.resolve(StripeService, 'encryption')
    */
   async resolve<Binding extends keyof ContainerBindings>(

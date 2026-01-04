@@ -11,7 +11,7 @@ import { type VFile } from 'vfile'
 declare module 'mdast' {
   interface Data {
     /**
-     * [Fumadocs] Get content of unserializable element, `remarkStructure` uses it to generate search index.
+     * [Osmosis] Get content of unserializable element, `remarkStructure` uses it to generate search index.
      */
     _string?: string[]
   }

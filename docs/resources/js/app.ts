@@ -3,6 +3,7 @@ import docsearch from '@docsearch/js'
 
 declare global {
   var up: any
+  var Alpine: any
 }
 
 up.link.config.followSelectors.push('a[href]')
@@ -12,6 +13,7 @@ window.Alpine = Alpine
 Alpine.start()
 
 up.compiler('#docsearch', () => {
+  // @ts-expect-error
   docsearch({
     container: '#docsearch',
     appId: '6RHBSCEI3Q',

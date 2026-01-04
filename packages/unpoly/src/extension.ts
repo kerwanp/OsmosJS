@@ -1,5 +1,5 @@
 import { OsmosRenderer } from '@osmosjs/osmos/render'
-import { isJSXElement } from '@osmosjs/osmos/utils'
+import { isJSXElement } from '@osmosjs/osmos'
 import { VNODE_UNPOLY_FRAGMENT, VNODE_UNPOLY_SLOT } from './symbols.js'
 import { UnpolyContext } from './components/provider.jsx'
 

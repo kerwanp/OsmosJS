@@ -1,10 +1,11 @@
 import app from '@adonisjs/core/services/app'
 import { defineConfig, sources } from '@osmosjs/osmosis'
+import { defaultPlugins } from '@osmosjs/osmosis/plugins'
 
 export default defineConfig({
   markdown: {
-    rehypePlugins: [],
-    remarkPlugins: [],
+    rehypePlugins: defaultPlugins.rehypePlugins,
+    remarkPlugins: defaultPlugins.remarkPlugins,
   },
   output: app.makeURL('build'),
   cache: false,
@@ -32,7 +33,7 @@ export default defineConfig({
     },
     {
       prefix: '/docs/osmosis',
-      githubUrl: 'https://github.com/kerwanp/OsmosJS/tree/main/packages/unpoly/osmosis',
+      githubUrl: 'https://github.com/kerwanp/OsmosJS/tree/main/packages/osmosis/docs',
       source: sources.fs({
         path: new URL('../../packages/osmosis/docs/', import.meta.url),
       }),

@@ -1,5 +1,6 @@
 import { Osmos } from '@osmosjs/osmos'
 import { SearchDialog } from './search_dialog.tsx'
+import { SidebarToggle } from '@osmosjs/osmosis/ui'
 
 export function Header(this: Osmos) {
   return (
@@ -9,7 +10,7 @@ export function Header(this: Osmos) {
     >
       <div>
         <div className="px-[24px] h-[61px] border-b border-neutral grid grid-cols-3 items-center">
-          <div className="flex justify-between pl-4">
+          <div className="flex justify-between md:pl-4">
             <a
               className="inline-flex items-center gap-3 my-2 text-foreground font-semibold"
               href="/"
@@ -18,8 +19,12 @@ export function Header(this: Osmos) {
               <span>OsmosJS</span>
             </a>
           </div>
-          <SearchDialog />
-          <div></div>
+          <div>
+            <SearchDialog className="max-md:hidden" />
+          </div>
+          <div className="md:hidden flex justify-end items-center">
+            <SidebarToggle />
+          </div>
         </div>
       </div>
     </header>

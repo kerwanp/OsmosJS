@@ -1,12 +1,9 @@
+import { inspect } from 'node:util'
+import JSXRenderError from '../errors/jsx_render_error.js'
 import { type OsmosNode } from '../types/jsx.js'
-import { AsyncRenderer, IterableRenderer, JSXRenderer, LiteralsRenderer } from './renderers.js'
+import { JSXRenderer, LiteralsRenderer } from './renderers.js'
 
 export interface OsmosRendererOptions {
-  /**
-   * The Osmos context instance used for component rendering
-   */
-  osmos?: any
-
   /**
    * Callback function when chunk value
    * is written during render process.
@@ -21,15 +18,13 @@ export interface OsmosRendererOptions {
 }
 
 export class OsmosRenderer {
-  #renderers = new Map<string, RendererFn>()
-
   static renderers = new Map<string, RendererFn>()
 
+  protected renderers = new Map<string, RendererFn>()
+
   constructor(public options: OsmosRendererOptions) {
-    this.#renderers = new Map([
+    this.renderers = new Map([
       [LiteralsRenderer.name, LiteralsRenderer],
-      [IterableRenderer.name, IterableRenderer],
-      [AsyncRenderer.name, AsyncRenderer],
       [JSXRenderer.name, JSXRenderer],
       ...OsmosRenderer.renderers,
     ])
@@ -44,10 +39,14 @@ export class OsmosRenderer {
   }
 
   async render(node: OsmosNode) {
-    for (const [, renderer] of this.#renderers.entries()) {
+    for (const [, renderer] of this.renderers.entries()) {
       const rendered = await renderer.render(node, this)
       if (rendered) return true
     }
+
+    this.error(
+      new JSXRenderError(`Could not render "${inspect(node)}" as not renderer could handle it.`)
+    )
 
     return false
   }

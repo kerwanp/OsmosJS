@@ -6,19 +6,17 @@
 @import '@docsearch/css/dist/style.css';
 @import './docsearch.css';
 
+@source "../../../packages/osmosis";
+
 @plugin "@tailwindcss/typography";
 
 :root {
-  --sidebar-col: 268px;
-  --toc-width: 268px;
-
   --docs-height: 100dvh;
   --docs-header-height: 61px;
 }
 
 .docs-grid {
-  --sidebar-width: 268px;
-  --docs-rows-1: 0px;
+  /* --sidebar-width: 268px; */
 
   grid-template:
     'header header header header header'
@@ -49,7 +47,7 @@ article#page::before {
 
   border-color: #6663;
 
-  @apply absolute inset-0 m-4 mb-2 rounded-xl bg-card border shadow-xl;
+  @apply absolute inset-0 m-4 mb-2 rounded-xl bg-card border shadow-xl hidden md:block;
 }
 
 .prose-no-margin > :last-child {
@@ -71,4 +69,12 @@ article#page::before {
   * {
     @apply border-border;
   }
+}
+
+body:has(#sidebar-toggle:checked) nav#sidebar {
+  @apply max-md:translate-x-0;
+}
+
+body:has(#sidebar-toggle:checked) #sidebar-backdrop {
+  @apply block;
 }

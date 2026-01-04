@@ -2,5 +2,5 @@
   "title": "Osmosis",
   "description": "Build documentation websites powered by Osmos and AdonisJS",
   "icon": "hgi hgi-stroke hgi-sparkles",
-  "pages": ["index", "getting-started", "---Guides---", "sources", "markdown"]
+  "pages": ["index", "getting-started", "---Guides---", "configuration", "markdown"]
 }

@@ -1,0 +1,170 @@
+---
+title: Reference
+icon: hgi hgi-stroke hgi-source-code
+description: Reference for the @osmosjs/osmos package
+---
+
+## Rendering
+
+### renderToString
+
+Renders an OsmosNode to a string by accumulating all rendered chunks into a buffer and returning the complete result.
+
+This function is useful when you need the entire rendered output as a single string, such as for static site generation or server-side rendering where the full content is needed before sending a response.
+
+```ts
+import { renderToString } from '@osmosjs/osmos'
+
+const html = await renderToString(<div>Hello World</div>)
+// Returns: '<div>Hello World</div>'
+```
+
+### renderToReadableStream
+
+Renders an OsmosNode to a ReadableStream, enabling streaming of the rendered output as it becomes available.
+
+This function is ideal for server-side rendering scenarios where you want to start sending content to the client as soon as it's rendered, rather than waiting for the entire render to complete. The stream emits Uint8Array chunks encoded as UTF-8, making it suitable for HTTP responses.
+
+```ts
+import { renderToReadableStream } from '@osmosjs/osmos'
+
+const stream = renderToReadableStream(<div>Hello World</div>)
+// Can be used with Response or other streaming APIs
+new Response(stream, { headers: { 'Content-Type': 'text/html' } })
+```
+
+### raw
+
+Tag function for rendering raw HTML, CSS, or JavaScript content. Interpolated values are automatically escaped to prevent XSS attacks. Exported as `raw`, `html`, `js`, and `css` for IDE syntax highlighting.
+
+```tsx
+import { html, raw, js, css } from '@osmosjs/osmos'
+
+const App = () => {
+  return (
+    <html>
+      <head>
+        <script>{js`console.log('Hello ${user}')`}</script>
+        <style>
+          {css`
+            body {
+              background-color: red;
+            }
+          `}
+        </style>
+      </head>
+      <body>{html`<h1>Hello ${user}</h1>`}</body>
+    </html>
+  )
+}
+```
+
+### useRender
+
+Utility for creating polymorphic components that can render as different elements. If a `render` prop is provided, it merges props and renders that element. Otherwise, falls back to the `defaultTagName` with the provided props.
+
+This API is inspired by BaseUI's polymorphic component pattern.
+
+**WARNING:** This is an experimental API and is subject to changes.
+
+```tsx
+import { useRender } from '@osmosjs/osmos'
+
+function Button({ render, ...props }) {
+  return useRender({ render, props, defaultTagName: 'button' })
+}
+// Can be used as: <Button render={<a href="/">Link</a>} /> or <Button>Button</Button>
+```
+
+## Utilities
+
+### escapeHTML
+
+Escapes HTML special characters to prevent XSS attacks. Converts `"`, `'`, `&`, `<`, and `>` to their HTML entity equivalents.
+
+```ts
+import { escapeHTML } from '@osmosjs/osmos'
+
+escapeHTML('<script>alert("XSS")</script>')
+// Returns: '&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;'
+```
+
+### escapeJSX
+
+Escapes JSX content by converting values to strings and escaping HTML. Numbers and bigints are converted to strings, strings are HTML-escaped, and other types return an empty string.
+
+```ts
+import { escapeJSX } from '@osmosjs/osmos'
+
+escapeJSX('<div>Hello</div>') // '&lt;div&gt;Hello&lt;/div&gt;'
+escapeJSX(42) // '42'
+escapeJSX(null) // ''
+```
+
+### isJSXElement
+
+Type guard to check if a value is a JSX element (OsmosElement). Verifies that the value has the `$$typeof` symbol matching VNODE_SYMBOL.
+
+```ts
+import { isJSXElement } from '@osmosjs/osmos'
+
+isJSXElement(<div />) // true
+isJSXElement('string') // false
+isJSXElement(null) // false
+```
+
+### normalizeProps
+
+Normalizes JSX props to HTML attributes. Converts `className` to `class`, stringifies `style` objects, and filters out undefined values.
+
+```ts
+import { normalizeProps } from '@osmosjs/osmos'
+
+normalizeProps({ className: 'btn', style: { color: 'red' }, id: 'button' })
+// Returns: { class: 'btn', style: 'color: red;', id: 'button' }
+```
+
+### mergeClassNames
+
+Merges class names using clsx and tailwind-merge. Combines multiple class name inputs and resolves conflicts using Tailwind's merge logic.
+
+```ts
+import { mergeClassNames } from '@osmosjs/osmos'
+
+mergeClassNames('btn', 'btn-primary', { 'btn-disabled': true })
+// Returns: 'btn btn-primary btn-disabled'
+```
+
+### mergeStyles
+
+Merges two style values by concatenating them as strings. Converts style objects to strings before concatenation.
+
+```ts
+import { mergeStyles } from '@osmosjs/osmos'
+
+mergeStyles('color: red;', { backgroundColor: 'blue' })
+// Returns: 'color: red; background-color: blue;'
+```
+
+### mergeObjects
+
+Merges two objects, handling undefined values gracefully. Returns the first object if the second is undefined, the second if the first is undefined, or a merged object if both exist.
+
+```ts
+import { mergeObjects } from '@osmosjs/osmos'
+
+mergeObjects({ a: 1 }, { b: 2 }) // { a: 1, b: 2 }
+mergeObjects({ a: 1 }, undefined) // { a: 1 }
+mergeObjects(undefined, undefined) // undefined
+```
+
+### mergeProps
+
+Merges multiple props objects together, with special handling for `style` and `className`. Later props override earlier ones, except `style` and `className` which are intelligently merged.
+
+```tsx
+import { mergeProps } from '@osmosjs/osmos'
+
+mergeProps({ className: 'a', id: '1' }, { className: 'b', id: '2' })
+// Returns: { className: 'a b', id: '2' }
+```

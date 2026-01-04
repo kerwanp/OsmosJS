@@ -1,4 +1,4 @@
-import { ComponentProps, OsmosNode } from '@osmosjs/osmos'
+import { ComponentProps } from '@osmosjs/osmos'
 
 export const Steps = ({ className, ...props }: ComponentProps<'div'>) => {
   return (

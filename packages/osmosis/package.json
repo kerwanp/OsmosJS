@@ -16,6 +16,7 @@
     "./plugins": "./build/modules/plugins.js",
     "./loaders": "./build/modules/loaders.js",
     "./collections": "./build/modules/collections.js",
+    "./ui": "./build/modules/ui.js",
     "./osmosis_provider": "./build/providers/osmosis_provider.js"
   },
   "scripts": {
@@ -78,6 +79,7 @@
   },
   "dependencies": {
     "@adonisjs/content": "^1.5.0",
+    "@mdx-js/mdx": "^3.1.1",
     "@osmosjs/adonis": "workspace:*",
     "@osmosjs/osmos": "workspace:*",
     "@shikijs/rehype": "^3.20.0",
@@ -86,13 +88,15 @@
     "estree-util-value-to-estree": "^3.5.0",
     "github-slugger": "^2.0.0",
     "mdast": "^3.0.0",
+    "mdx": "^0.3.1",
     "npm-to-yarn": "^3.0.1",
     "octokit": "^5.0.5",
     "shiki": "^3.20.0",
     "to-vfile": "^8.0.0",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0",
-    "vfile": "^6.0.3"
+    "vfile": "^6.0.3",
+    "vfile-matter": "^5.0.1"
   },
   "peerDependencies": {
     "@adonisjs/core": "^7.0.0-next.17",

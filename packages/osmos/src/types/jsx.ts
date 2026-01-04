@@ -9,6 +9,7 @@ export type OsmosElement<
     | JSXElementConstructor<any>
     | symbol,
 > = {
+  [Symbol.toStringTag]?: 'OsmosElement'
   $$typeof: symbol
   type: T
   props: P
@@ -31,6 +32,7 @@ export type OsmosNode =
   | number
   | bigint
   | Iterable<OsmosNode>
+  | AsyncIterable<OsmosNode>
   | boolean
   | null
   | undefined

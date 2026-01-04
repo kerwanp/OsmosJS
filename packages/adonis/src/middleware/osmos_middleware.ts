@@ -3,7 +3,7 @@ import { type NextFn } from '@adonisjs/core/types/http'
 import { Readable } from 'node:stream'
 import { OsmosManager } from '../osmos_manager.js'
 import { renderToReadableStream } from '@osmosjs/osmos'
-import { isJSXElement } from '@osmosjs/osmos/utils'
+import { isJSXElement } from '@osmosjs/osmos'
 import { type Osmos } from '../osmos.js'
 
 export default class OsmosMiddleware {
