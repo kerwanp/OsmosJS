@@ -1,7 +1,7 @@
 {
   "name": "@osmosjs/osmos",
   "description": "Light-weight server-side JSX runtime",
-  "version": "0.0.1-alpha.3",
+  "version": "0.0.1-alpha.4",
   "engines": {
     "node": ">=20.6.0"
   },
