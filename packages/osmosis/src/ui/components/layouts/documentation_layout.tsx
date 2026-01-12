@@ -29,7 +29,7 @@ export interface DocumentationLayout {
 }
 
 export const DocumentationLayout = async ({ markdown }: DocumentationLayout) => {
-  const { documentation, page, osmosis } = OsmosisContext.getOrFail()
+  const { documentation, page } = OsmosisContext.getOrFail()
   const { Markdown, toc } = await page.load()
 
   return (
