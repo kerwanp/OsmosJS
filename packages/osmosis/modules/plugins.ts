@@ -5,6 +5,7 @@ import { remarkInstall } from '../src/plugins/remark_install.js'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
 import { rehypeCode } from './plugins.js'
+import { default as remarkGfm } from 'remark-gfm'
 
 export * from '../src/plugins/remark_heading.js'
 export * from '../src/plugins/rehype_code.js'
@@ -20,6 +21,7 @@ export const defaultPlugins = {
     remarkInstall,
     remarkCodeTab,
     remarkCallout,
+    remarkGfm,
   ],
   rehypePlugins: [rehypeCode],
 }

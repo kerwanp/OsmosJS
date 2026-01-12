@@ -5,7 +5,7 @@ import {
   type DocumentationLoaderOptions,
 } from './loaders/documentation_loader.js'
 import { type LazyImport } from '@adonisjs/core/types/common'
-import { type FC } from '@osmosjs/osmos'
+import { type ComponentProps, type FC } from '@osmosjs/osmos'
 import { type VFile } from 'vfile'
 
 declare module 'mdast' {
@@ -25,7 +25,11 @@ export interface OsmosisConfig {
     remarkPlugins: PluggableList
     rehypePlugins: PluggableList
   }
-  page: LazyImport<DocumentationPageComponent>
+
+  components: {
+    Page: LazyImport<DocumentationPageComponent>
+    Icon: LazyImport<IconComponent>
+  }
 }
 
 export interface SourceContract {
@@ -40,3 +44,9 @@ export type DocumentationPageComponent = FC<{
   documentations: Documentation[]
   page: DocumentationPage
 }>
+
+export type IconComponent = FC<
+  ComponentProps<'i'> & {
+    name: string
+  }
+>

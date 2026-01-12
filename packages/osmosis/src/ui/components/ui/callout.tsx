@@ -48,7 +48,7 @@ export const Callout = ({
   return (
     <div
       className={[
-        'flex gap-2 my-4 rounded-xl border bg-fd-card p-3 ps-1 text-sm text-fd-card-foreground shadow-md',
+        'flex gap-2 my-4 rounded-xl border bg-card p-3 ps-1 text-sm text-card-foreground shadow-md',
         className,
       ]}
       style={{

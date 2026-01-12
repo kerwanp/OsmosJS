@@ -2,6 +2,10 @@ import { ComponentProps } from '@osmosjs/osmos'
 
 // TODO: Closing animation does not seem to work properly even with transition-discrete on details-content
 
+export const Accordions = ({ ...props }: ComponentProps<'div'>) => {
+  return <div {...props} />
+}
+
 export const Accordion = ({ ...props }: ComponentProps<'details'>) => {
   return (
     <details

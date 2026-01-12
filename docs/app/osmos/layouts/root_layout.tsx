@@ -16,9 +16,6 @@ export default function RootLayout({
           name="description"
           content={description ?? 'OsmosJS is a light-weight and server-side JSX runtime.'}
         />
-        <script src="https://cdn.jsdelivr.net/npm/unpoly@3.12.1/unpoly.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/unpoly@3.12.1/unpoly.min.css" />
-        <link rel="stylesheet" href="https://use.hugeicons.com/font/icons.css" />
         <Vite entrypoints={['resources/css/app.css', 'resources/js/app.ts']} />
       </head>
       <body x-data className="relative bg-background text-foreground flex min-h-screen flex-col">

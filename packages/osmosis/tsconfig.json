@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": "./",
     "outDir": "./build",
-    "lib": ["ESNext", "DOM"],
+    "lib": ["DOM", "ESNext", "DOM.Iterable", "ES2020"],
     "jsx": "preserve",
     "types": ["@osmosjs/adonis/osmos_middleware"]
   }

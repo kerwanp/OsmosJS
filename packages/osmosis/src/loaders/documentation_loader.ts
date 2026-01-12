@@ -28,7 +28,7 @@ export const SocialsSchema = vine.object({
 
 export const MetaFileSchema = vine.object({
   title: vine.string(),
-  description: vine.string(),
+  description: vine.string().optional(),
   pages: vine.array(vine.string()),
   icon: vine.string().optional(),
 
@@ -67,7 +67,7 @@ export const PageSchema = vine.object({
 
 export const DocumentationSchema = vine.object({
   name: vine.string(),
-  description: vine.string(),
+  description: vine.string().optional(),
   prefix: vine.string(),
   icon: vine.string().optional(),
 
