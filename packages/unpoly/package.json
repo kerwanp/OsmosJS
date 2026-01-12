@@ -1,7 +1,7 @@
 {
   "name": "@osmosjs/unpoly",
   "description": "Unpoly integration for OsmosJS with Network Protocol implementation",
-  "version": "0.0.1-alpha.2",
+  "version": "0.0.1-alpha.3",
   "engines": {
     "node": ">=20.6.0"
   },
